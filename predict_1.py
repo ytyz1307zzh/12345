@@ -40,7 +40,7 @@ for feature in one_hot_feature:
 
 for feature in other_features:
     data[feature]=data[feature].apply(int)
-
+'''
 train_neg=data[data.label==-1]
 train_pos=data[data.label==1]
 train=train_neg
@@ -48,6 +48,8 @@ for _ in range(10):
     train=pd.concat([train,train_pos])
 train=train.reset_index(drop=True)
 train=train.sample(frac=1).reset_index(drop=True)
+'''
+train=data[data.label!=0]
 train_y=train.pop('label')
 
 test=data[data.label==0]
