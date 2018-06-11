@@ -9,21 +9,22 @@ dir_path=r'C:/Users/Zhihan Zhang/Desktop/算分/preliminary_contest_data/prelimi
 
 ad_feature=pd.read_csv(dir_path+r'/adFeature.csv')
 user_feature=pd.read_csv(dir_path+r'/userFeature_tiny_100000.csv')
-train=pd.read_csv(dir_path+r'/train_100000.csv')
+data=pd.read_csv(dir_path+r'/train_100000.csv')
 
-train=pd.merge(train,ad_feature,on='aid',how='left')
-train=pd.merge(train,user_feature,on='uid',how='left')
-train=train.fillna('-1')
+data=pd.merge(data,ad_feature,on='aid',how='left')
+data=pd.merge(data,user_feature,on='uid',how='left')
+data=data.fillna('-1')
 
 one_hot_feature=['LBS','age','carrier','consumptionAbility','education','gender','house','os','ct','marriageStatus','advertiserId','campaignId', 'creativeId',
        'adCategoryId', 'productId', 'productType']
 vector_feature=['appIdAction','appIdInstall','interest1','interest2','interest3','interest4','interest5','kw1','kw2','kw3','topic1','topic2','topic3']
 for feature in one_hot_feature:
     try:
-        train[feature] = LabelEncoder().fit_transform(train[feature].apply(int))
+        data[feature] = LabelEncoder().fit_transform(data[feature].apply(int))
     except:
-        train[feature] = LabelEncoder().fit_transform(train[feature])
+        data[feature] = LabelEncoder().fit_transform(data[feature])
 
+train=data
 train_y=train.pop('label')
 train, test, train_y, test_y = train_test_split(train,train_y,test_size=0.2, random_state=2018)
 enc = OneHotEncoder()
@@ -31,7 +32,7 @@ train_x=train[['creativeSize']]
 test_x=test[['creativeSize']]
 
 for feature in one_hot_feature:
-    enc.fit(train[feature].values.reshape(-1, 1))
+    enc.fit(data[feature].values.reshape(-1, 1))
     train_a=enc.transform(train[feature].values.reshape(-1, 1))
     test_a = enc.transform(test[feature].values.reshape(-1, 1))
     train_x= sparse.hstack((train_x, train_a))
@@ -40,7 +41,7 @@ print('one-hot prepared !')
 
 cv=CountVectorizer()
 for feature in vector_feature:
-    cv.fit(train[feature])
+    cv.fit(data[feature])
     train_a = cv.transform(train[feature])
     test_a = cv.transform(test[feature])
     train_x = sparse.hstack((train_x, train_a))
