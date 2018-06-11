@@ -1,6 +1,5 @@
 import pandas as pd
 import lightgbm as lgb
-import time
 from imblearn.over_sampling import SMOTE
 import numpy as np
 from mlxtend.classifier import StackingClassifier
@@ -16,7 +15,6 @@ dir_path=r'C:/Users/Zhihan Zhang/Desktop/算分/preliminary_contest_data/prelimi
 feature_output_path=dir_path+r'/feature_importance.txt'
 feature_output_file=open(feature_output_path,'w')
 
-starttime = time.clock()
 
 ad_feature=pd.read_csv(dir_path+r'/adFeature.csv')
 user_feature_1=pd.read_csv(dir_path+r'/userFeature_tiny_100000.csv')
