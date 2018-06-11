@@ -68,7 +68,7 @@ test_x=test[['creativeSize']]
 
 enc = OneHotEncoder()
 for feature in one_hot_feature:
-    enc.fit(train[feature].values.reshape(-1, 1))
+    enc.fit(data[feature].values.reshape(-1, 1))
     train_a=enc.transform(train[feature].values.reshape(-1, 1))
     test_a = enc.transform(test[feature].values.reshape(-1, 1))
     train_x= sparse.hstack((train_x, train_a))
@@ -77,7 +77,7 @@ print('one-hot prepared !')
 
 cv=CountVectorizer()
 for feature in vector_feature:
-    cv.fit(train[feature])
+    cv.fit(data[feature])
     train_a = cv.transform(train[feature])
     test_a = cv.transform(test[feature])
     train_x = sparse.hstack((train_x, train_a))
