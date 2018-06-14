@@ -15,6 +15,7 @@ from scipy import sparse
 np.set_printoptions(threshold=np.inf)
 dir_path=r'./preliminary_contest_data'
 
+#feature_importance_文件来源于之前跑模型后的收集，需要提前准备
 feature_path=dir_path+r'/feature_importance.txt'
 feature_file=open(feature_path,'r')
 imp=feature_file.readline()
@@ -98,6 +99,7 @@ test_x_new=test_x_new.tocoo()
 print(test_x_new.shape)
 print(train_x_new.shape)
 
+#baseline S只跑下方的LGB单模型，不跑stacking模型
 def LGB_test(train_x,train_y,test_x,test_y):
     print("LGB test")
     clf = lgb.LGBMClassifier(
@@ -113,7 +115,7 @@ clf,best_score=LGB_test(train_x_new,train_y,test_x_new,test_y)
 score_output=open(dir_path+r'/best_score.txt','w')
 print(best_score,file=score_output)
 
-
+#baseline S plus只跑下面的stacking模型，不跑上面的lightGBM单模型
 def stack_test(train_x,train_y,test_x,test_y):
     print("start stacking test")
     clf1 = lgb.LGBMClassifier(
